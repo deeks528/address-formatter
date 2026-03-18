@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delivery Address</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+            max-width: 550px;
+            width: 100%;
+            padding: 40px;
+            animation: slideUp 0.4s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            margin-bottom: 35px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #222;
+            font-size: 32px;
+            margin-bottom: 8px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .header p {
+            color: #888;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #333;
+            font-weight: 600;
+            margin-bottom: 10px;
+            font-size: 14px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 13px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            background: #fafafa;
+        }
+
+        .form-group input:hover,
+        .form-group select:hover {
+            border-color: #d0d0d0;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.15);
+        }
+
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            margin: 20px 0;
+            padding: 16px 18px;
+            background: linear-gradient(135deg, #f8f9fb 0%, #f0f3ff 100%);
+            border-radius: 10px;
+            border: 2px solid #e8eaf0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .checkbox-group:hover {
+            border-color: #d0d4ff;
+            background: linear-gradient(135deg, #f5f7ff 0%, #eef2ff 100%);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 22px;
+            height: 22px;
+            margin-right: 14px;
+            cursor: pointer;
+            accent-color: #667eea;
+            flex-shrink: 0;
+            position: relative;
+            appearance: none;
+            -webkit-appearance: none;
+            background: white;
+            border: 2px solid #d0d0d0;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-group input[type="checkbox"]:hover {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .checkbox-group input[type="checkbox"]:checked {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .checkbox-group input[type="checkbox"]:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: #333;
+            font-size: 15px;
+            letter-spacing: 0.2px;
+            flex: 1;
+        }
+
+        .checkboxes-container {
+            margin: 30px 0;
+            padding: 24px;
+            background: linear-gradient(135deg, #f5f7ff 0%, #f0f3ff 100%);
+            border-radius: 12px;
+            border: 2px solid #e8eaf0;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.08);
+        }
+
+        .checkboxes-container .checkbox-group {
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+            margin-bottom: 14px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .checkboxes-container .checkbox-group:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+
+        .checkboxes-container .checkbox-group:hover {
+            background: transparent;
+            border: none;
+            box-shadow: none;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-top: 35px;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            grid-column: 1 / -1;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+            border-color: #d0d0d0;
+        }
+
+        .btn-secondary:active {
+            background: #e0e0e0;
+        }
+
+        .required {
+            color: #e74c3c;
+            font-weight: 700;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px 24px;
+                border-radius: 16px;
+            }
+
+            .header h1 {
+                font-size: 28px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .button-group {
+                gap: 10px;
+            }
+
+            .checkboxes-container {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 24px;
+                border-radius: 12px;
+            }
+
+            .header {
+                margin-bottom: 28px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .header p {
+                font-size: 13px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .button-group {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                padding: 12px 18px;
+                font-size: 15px;
+            }
+
+            .checkbox-group {
+                padding: 14px 16px;
+                margin: 16px 0;
+            }
+
+            .checkbox-group input[type="checkbox"] {
+                width: 20px;
+                height: 20px;
+            }
+
+            .checkbox-group label {
+                font-size: 14px;
+            }
+
+            .checkboxes-container {
+                margin: 24px 0;
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Delivery Address</h1>
+            <p>Enter your delivery address below</p>
+        </div>
+
+        <form id="addressForm">
+            <div class="form-group">
+                <label for="fullName">Full Name <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number <span class="required">*</span></label>
+                <input type="tel" id="phone" name="phone" placeholder="Enter 10-digit phone number" pattern="[0-9]{10}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="address1">Address Line 1 <span class="required">*</span></label>
+                <input type="text" id="address1" name="address1"
+                    placeholder="House No., Building/Appartment Name, Floor" required>
+            </div>
+
+            <div class="form-group">
+                <label for="address2">Address Line 2</label>
+                <input type="text" id="address2" name="address2"
+                    placeholder="Road name, Area, Colony/Street (Optional)">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City <span class="required">*</span></label>
+                    <input type="text" id="city" name="city" placeholder="Enter city" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="state">State <span class="required">*</span></label>
+                    <input type="text" id="state" name="state" placeholder="Enter state" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pincode">PIN Code <span class="required">*</span></label>
+                <input type="text" id="pincode" name="pincode" placeholder="6-digit PIN code" pattern="[0-9]{6}"
+                    required>
+            </div>
+
+            <div class="form-group">
+                <label for="landmark">Landmark</label>
+                <input type="text" id="landmark" name="landmark" placeholder="Near temple, hospital, etc. (Optional)">
+            </div>
+
+            <div class="checkboxes-container">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="defaultAddress" name="defaultAddress">
+                    <label for="defaultAddress">Set as default delivery address</label>
+                </div>
+                <div class="checkbox-group">
+                    <input type="checkbox" id="copyToClipboard" name="copyToClipboard">
+                    <label for="copyToClipboard">Copy to Clipboard</label>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn btn-primary">Send Address</button>
+                <button type="reset" class="btn btn-secondary">Clear</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('addressForm');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const formData = {
+                fullName: document.getElementById('fullName').value,
+                phone: document.getElementById('phone').value,
+                address1: document.getElementById('address1').value,
+                address2: document.getElementById('address2').value,
+                city: document.getElementById('city').value,
+                state: document.getElementById('state').value,
+                pincode: document.getElementById('pincode').value,
+                landmark: document.getElementById('landmark').value,
+                defaultAddress: document.getElementById('defaultAddress').checked,
+                copyToClipboard: document.getElementById('copyToClipboard').checked
+            };
+
+            const addressText = `To,\n${formData.fullName}\nH.no: ${formData.address1}\n${formData.landmark}\n${formData.address2}\n${formData.city}\n${formData.state}\nPin: ${formData.pincode}\nPh.no: ${formData.phone}`;
+
+            if (formData.copyToClipboard) {
+                navigator.clipboard.writeText(addressText).then(() => {
+                    console.log('Address Data:', formData);
+                }).catch((err) => {
+                    console.error('Failed to copy to clipboard:', err);
+                });
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            let recipientPhone = urlParams.get('phone') || '';
+
+            recipientPhone = recipientPhone.replace(/\D/g, '');
+            if (!recipientPhone) {
+                recipientPhone = "";
+            }
+            else if (!recipientPhone.startsWith('91')) {
+                recipientPhone = '91' + recipientPhone;
+            }
+
+            const encodedText = encodeURIComponent(addressText);
+            const whatsappUrl = `https://api.whatsapp.com/send/?phone=${recipientPhone}&text=${encodedText}&type=phone_number&app_absent=0`;
+
+            setTimeout(() => {
+                window.open(whatsappUrl, '_blank');
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>
