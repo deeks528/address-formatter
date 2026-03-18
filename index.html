@@ -360,8 +360,8 @@
 
         <form id="addressForm">
             <div class="form-group">
-                <label for="fullName">Full Name <span class="required">*</span></label>
-                <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                <label for="fullName">Name <span class="required">*</span></label>
+                <input type="text" id="fullName" name="fullName" placeholder="Enter your name" required>
             </div>
 
             <div class="form-group">
@@ -407,10 +407,6 @@
 
             <div class="checkboxes-container">
                 <div class="checkbox-group">
-                    <input type="checkbox" id="defaultAddress" name="defaultAddress">
-                    <label for="defaultAddress">Set as default delivery address</label>
-                </div>
-                <div class="checkbox-group">
                     <input type="checkbox" id="copyToClipboard" name="copyToClipboard">
                     <label for="copyToClipboard">Copy to Clipboard</label>
                 </div>
@@ -419,12 +415,32 @@
             <div class="button-group">
                 <button type="submit" class="btn btn-primary">Send Address</button>
                 <button type="reset" class="btn btn-secondary">Clear</button>
+                <button type="reset" class="btn btn-secondary"
+                    onclick="localStorage.removeItem('deliveryAddress')">Clear Auto-fill</button>
             </div>
         </form>
     </div>
 
     <script>
         const form = document.getElementById('addressForm');
+
+        function loadAddressFromCache() {
+            const cachedAddress = localStorage.getItem('deliveryAddress');
+            if (cachedAddress) {
+                const formData = JSON.parse(cachedAddress);
+                document.getElementById('fullName').value = formData.fullName || '';
+                document.getElementById('phone').value = formData.phone || '';
+                document.getElementById('address1').value = formData.address1 || '';
+                document.getElementById('address2').value = formData.address2 || '';
+                document.getElementById('city').value = formData.city || '';
+                document.getElementById('state').value = formData.state || '';
+                document.getElementById('pincode').value = formData.pincode || '';
+                document.getElementById('landmark').value = formData.landmark || '';
+                console.log('Address loaded from cache');
+            }
+        }
+
+        window.addEventListener('load', loadAddressFromCache);
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -438,11 +454,13 @@
                 state: document.getElementById('state').value,
                 pincode: document.getElementById('pincode').value,
                 landmark: document.getElementById('landmark').value,
-                defaultAddress: document.getElementById('defaultAddress').checked,
                 copyToClipboard: document.getElementById('copyToClipboard').checked
             };
 
-            const addressText = `To,\n${formData.fullName}\nH.no: ${formData.address1}\n${formData.landmark}\n${formData.address2}\n${formData.city}\n${formData.state}\nPin: ${formData.pincode}\nPh.no: ${formData.phone}`;
+            localStorage.setItem('deliveryAddress', JSON.stringify(formData));
+            console.log('Address saved to cache');
+
+            const addressText = `To,\n${formData.fullName}\nH.no: ${formData.address1}\n${formData.landmark ? formData.landmark + '\n' : ''}${formData.address2 ? formData.address2 + '\n' : ''}${formData.city}\n${formData.state}\nPin: ${formData.pincode}\nPh.no: ${formData.phone}`;
 
             if (formData.copyToClipboard) {
                 navigator.clipboard.writeText(addressText).then(() => {
